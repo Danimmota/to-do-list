@@ -1,0 +1,49 @@
+package com.danimota.to_do_list.service;
+
+import com.danimota.to_do_list.entity.ToDo;
+import com.danimota.to_do_list.repository.ToDoRepository;
+import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ToDoService {
+
+    private final ToDoRepository toDoRepository;
+
+    public ToDoService(ToDoRepository toDoRepository) {
+        this.toDoRepository = toDoRepository;
+    }
+
+    public List<ToDo> list() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "prioridade")
+                .and(Sort.by(Sort.Direction.ASC, "id"));
+        return toDoRepository.findAll(sort);
+    }
+
+    public List<ToDo> create(ToDo toDo) {
+        toDoRepository.save(toDo);
+        return list();
+    }
+
+    public List<ToDo> update(Long id, ToDo toDo) {
+        toDoRepository.findById(id).ifPresentOrElse((existingToDo) -> {
+            toDo.setId(id);
+            toDoRepository.save(toDo);
+        }, () -> { throw new BadRequestException("ToDo %d não existe! ".formatted(id));
+        });
+        return list();
+
+    }
+
+    public List<ToDo> delete(Long id) {
+        toDoRepository.findById(id).ifPresentOrElse((existingToDo) -> toDoRepository.delete(existingToDo),
+                () -> { throw new BadRequestException("ToDo %d não existe! ".formatted(id));
+        });
+
+        return list();
+    }
+
+}

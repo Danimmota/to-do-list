@@ -7,6 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.danimota.to_do_list.TestConstants.TODO;
+import static com.danimota.to_do_list.TestConstants.TODOS;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ToDoListApplicationTests {
 
@@ -72,7 +75,7 @@ class ToDoListApplicationTests {
 				.put()
 				.uri("/todos/" + unexinstingId)
 				.bodyValue(
-						new Todo(unexinstingId, "", "", false, 0))
+						new ToDo(unexinstingId, "", "", false, 0))
 				.exchange()
 				.expectStatus().isBadRequest();
 	}

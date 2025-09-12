@@ -1,15 +1,14 @@
-<h1 align="center">TODO List</h1>
+<h1 align="center">📋 ToDo List</h1>
 
-API para gerenciar tarefas (CRUD) que faz parte desse desafio para pessoas desenvolvedoras backend júnior, que se candidatam para a Simplify.
+API para gerenciar tarefas (CRUD).
 
+## ⚙️ Tecnologias Utilizadas
 
-## 📚 Tecnologias Utilizadas
-
-- Spring Boot
-- Spring MVC
-- Spring Data JPA
-- SpringDoc OpenAPI 3
-- Mysql
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring MVC](https://docs.spring.io/spring-framework/reference/web/webmvc.html)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [SpringDoc OpenAPI 3](https://springdoc.org/)
+- [Mysql](https://dev.mysql.com/downloads/)
 
 ## 📚 Práticas adotadas
 
@@ -27,12 +26,12 @@ API para gerenciar tarefas (CRUD) que faz parte desse desafio para pessoas desen
 
   - Criar tarefa
   ```bash
-  $ http POST :8080/todos nome="Todo 1" descricao="Desc Todo 1" prioridade=1
+  $ http POST :8080/todos nome="ToDo" descricao="Desc ToDo" prioridade=1
   [
     {
-    "descricao": "Desc Todo 1",
+    "descricao": "Desc ToDo",
     "id": 1,
-    "nome": "Todo 1",
+    "nome": "ToDo",
     "prioridade": 1,
     "realizado": false
     }
@@ -43,9 +42,9 @@ API para gerenciar tarefas (CRUD) que faz parte desse desafio para pessoas desen
   $ http GET :8080/todos
   [
     {
-    "descricao": "Desc Todo 1",
+    "descricao": "Desc ToDo",
     "id": 1,
-    "nome": "Todo 1",
+    "nome": "ToDo",
     "prioridade": 1,
     "realizado": false
     }
@@ -54,12 +53,12 @@ API para gerenciar tarefas (CRUD) que faz parte desse desafio para pessoas desen
     
   - Atualizar tarefas
   ```bash
-  $ http PUT :8080/todos/1 nome="Todo 1 Up" descricao="Desc Todo 1 Up" prioridade=2
+  $ http PUT :8080/todos/1 nome="ToDo Up" descricao="Desc ToDo Up" prioridade=2
   [
     {
-    "descricao": "Desc Todo 1 Up",
+    "descricao": "Desc ToDo Up",
     "id": 1,
-    "nome": "Todo 1 Up",
+    "nome": "ToDo Up",
     "prioridade": 2,
     "realizado": false
     }

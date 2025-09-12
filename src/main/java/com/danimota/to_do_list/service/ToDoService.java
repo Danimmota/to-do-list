@@ -30,6 +30,7 @@ public class ToDoService {
     public List<ToDo> create(ToDoDTO dto) {
         ToDo toDo = ToDoMapper.toentity(dto);
         toDoRepository.save(toDo);
+
         return list();
     }
 
@@ -42,7 +43,6 @@ public class ToDoService {
         }, () -> { throw new BadRequestException("ToDo %d não existe! ".formatted(id));
         });
         return list();
-
     }
 
     public void delete(Long id) {
@@ -51,5 +51,4 @@ public class ToDoService {
                 () -> { throw new BadRequestException("ToDo %d não existe! ".formatted(id));
         });
     }
-
 }

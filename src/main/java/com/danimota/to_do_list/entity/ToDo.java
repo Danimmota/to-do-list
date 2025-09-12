@@ -1,7 +1,6 @@
 package com.danimota.to_do_list.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "todos")
@@ -11,13 +10,12 @@ public class ToDo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String nome;
-
-    @NotBlank
     private String descricao;
     private boolean realizado;
     private int prioridade;
+
+    public ToDo() {}
 
     public ToDo(Long id, String nome, String descricao, boolean realizado, int prioridade) {
         this.id = id;

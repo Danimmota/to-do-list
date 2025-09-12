@@ -1,5 +1,6 @@
 package com.danimota.to_do_list.controller;
 
+import com.danimota.to_do_list.dto.ToDoDTO;
 import com.danimota.to_do_list.entity.ToDo;
 import com.danimota.to_do_list.service.ToDoService;
 import jakarta.transaction.Transactional;
@@ -22,8 +23,8 @@ public class ToDoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<List<ToDo>> create(@Valid @RequestBody ToDo toDo) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(toDoService.create(toDo));
+    public ResponseEntity<List<ToDo>> create(@RequestBody  @Valid ToDoDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDoService.create(dto));
     }
     @GetMapping
     public ResponseEntity<List<ToDo>> list(){
@@ -31,12 +32,12 @@ public class ToDoController {
     }
     @PutMapping("{id}")
     @Transactional
-    public ResponseEntity<List<ToDo>> update(@PathVariable Long id, @RequestBody ToDo toDo) {
-        return ResponseEntity.status(HttpStatus.OK).body(toDoService.update(id, toDo));
+    public ResponseEntity<List<ToDo>> update(@PathVariable Long id, @RequestBody @Valid ToDoDTO dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(toDoService.update(id, dto));
     }
     @DeleteMapping("{id}")
     @Transactional
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         toDoService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

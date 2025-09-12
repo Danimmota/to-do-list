@@ -8,13 +8,13 @@ import java.util.List;
 public class TestConstants {
     public static final List<ToDo> TODOS = new ArrayList<>() {
         {
-            add(new ToDo(9995L, "@giulianabezerra", "Curtir", false, 1));
-            add(new ToDo(9996L, "@giulianabezerra", "Comentar", false, 1));
-            add(new ToDo(9997L, "@giulianabezerra", "Compartilhar", false, 1));
-            add(new ToDo(9998L, "@giulianabezerra", "Se Inscrever", false, 1));
-            add(new ToDo(9999L, "@giulianabezerra", "Ativar as Notificações", false, 1));
+            add(new ToDo(10L, "Estudar 1", "Curtir", false, 1));
+            add(new ToDo(20L, "Estudar 2", "Comentar", false, 1));
+            add(new ToDo(30L, "Estudar 3", "Compartilhar", false, 1));
+            add(new ToDo(40L, "Estudar 4", "Se Inscrever", false, 1));
+            add(new ToDo(50L, "Estudar 5", "Ativar as Notificações", false, 1));
         }
     };
 
-    public static final ToDo TODO = TODOS.get(0);
+    public static final ToDo TODO = TODOS.getFirst();
 }

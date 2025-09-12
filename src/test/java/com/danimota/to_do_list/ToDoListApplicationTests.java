@@ -1,5 +1,6 @@
 package com.danimota.to_do_list;
 
+import com.danimota.to_do_list.dto.ToDoDTO;
 import com.danimota.to_do_list.entity.ToDo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import static com.danimota.to_do_list.TestConstants.TODO;
 import static com.danimota.to_do_list.TestConstants.TODOS;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql("/remove.sql")
 class ToDoListApplicationTests {
 
 	@Autowired
@@ -25,7 +27,7 @@ class ToDoListApplicationTests {
 				.uri("/todos")
 				.bodyValue(toDo)
 				.exchange()
-				.expectStatus().isOk()
+				.expectStatus().isCreated()
 				.expectBody()
 				.jsonPath("$").isArray()
 				.jsonPath("$.length()").isEqualTo(1)
@@ -41,15 +43,19 @@ class ToDoListApplicationTests {
 				.post()
 				.uri("/todos")
 				.bodyValue(
-						new ToDo("", "", false, 0))
+						new ToDoDTO("", "", false, 0))
 				.exchange()
-				.expectStatus().isBadRequest();
+				.expectStatus().isBadRequest()
+				.expectBody()
+				.jsonPath("$.nome").isEqualTo("Nome é obrigatório")
+				.jsonPath("$.descricao").isEqualTo("Descrição é obrigatória")
+				.jsonPath("$.prioridade").isEqualTo("Prioridade deve ser >= 1");
 	}
 
 	@Sql("/import.sql")
 	@Test
 	public void testUpdateTodoSuccess() {
-		var todo = new ToDo(TODO.getId(), TODO.getNome() + " Up", TODO.getNome() + " Up", !TODO.isRealizado(),
+		var todo = new ToDoDTO(TODO.getNome(), TODO.getDescricao(), !TODO.isRealizado(),
 				TODO.getPrioridade() + 1);
 
 		webTestClient
@@ -61,10 +67,10 @@ class ToDoListApplicationTests {
 				.expectBody()
 				.jsonPath("$").isArray()
 				.jsonPath("$.length()").isEqualTo(5)
-				.jsonPath("$[0].nome").isEqualTo(todo.getNome())
-				.jsonPath("$[0].descricao").isEqualTo(todo.getDescricao())
-				.jsonPath("$[0].realizado").isEqualTo(todo.isRealizado())
-				.jsonPath("$[0].prioridade").isEqualTo(todo.getPrioridade());
+				.jsonPath("$[0].nome").isEqualTo(todo.nome())
+				.jsonPath("$[0].descricao").isEqualTo(todo.descricao())
+				.jsonPath("$[0].realizado").isEqualTo(todo.realizado())
+				.jsonPath("$[0].prioridade").isEqualTo(todo.prioridade());
 	}
 
 	@Test
@@ -75,7 +81,7 @@ class ToDoListApplicationTests {
 				.put()
 				.uri("/todos/" + unexinstingId)
 				.bodyValue(
-						new ToDo(unexinstingId, "", "", false, 0))
+						new ToDoDTO("", "", false, 1))
 				.exchange()
 				.expectStatus().isBadRequest();
 	}
@@ -85,16 +91,10 @@ class ToDoListApplicationTests {
 	public void testDeleteTodoSuccess() {
 		webTestClient
 				.delete()
-				.uri("/todos/" + TODOS.get(0).getId())
+				.uri("/todos/" + TODOS.get(1).getId())
 				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$").isArray()
-				.jsonPath("$.length()").isEqualTo(4)
-				.jsonPath("$[0].nome").isEqualTo(TODOS.get(1).getNome())
-				.jsonPath("$[0].descricao").isEqualTo(TODOS.get(1).getDescricao())
-				.jsonPath("$[0].realizado").isEqualTo(TODOS.get(1).isRealizado())
-				.jsonPath("$[0].prioridade").isEqualTo(TODOS.get(1).getPrioridade());
+				.expectStatus().isNoContent()
+				.expectBody().isEmpty();
 	}
 
 	@Test
@@ -105,10 +105,11 @@ class ToDoListApplicationTests {
 				.delete()
 				.uri("/todos/" + unexinstingId)
 				.exchange()
-				.expectStatus().isBadRequest();
+				.expectStatus().isBadRequest()
+				.expectBody()
+				.jsonPath("$.erro").isEqualTo("ToDo %d não existe! ".formatted(unexinstingId));
 	}
-
-	@Sql("/import.sql")
+	@Sql(scripts = "/import.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 	@Test
 	public void testListTodos() throws Exception {
 		webTestClient
@@ -119,11 +120,10 @@ class ToDoListApplicationTests {
 				.expectBody()
 				.jsonPath("$").isArray()
 				.jsonPath("$.length()").isEqualTo(5)
-				.jsonPath("$[0]").isEqualTo(TODOS.get(0))
-				.jsonPath("$[1]").isEqualTo(TODOS.get(1))
-				.jsonPath("$[2]").isEqualTo(TODOS.get(2))
-				.jsonPath("$[3]").isEqualTo(TODOS.get(3))
-				.jsonPath("$[4]").isEqualTo(TODOS.get(4));
+				.jsonPath("$[0].nome").isEqualTo(TODOS.get(0).getNome())
+				.jsonPath("$[0].descricao").isEqualTo(TODOS.get(0).getDescricao())
+				.jsonPath("$[0].realizado").isEqualTo(TODOS.get(0).isRealizado())
+				.jsonPath("$[0].prioridade").isEqualTo(TODOS.get(0).getPrioridade());
 	}
 
 }

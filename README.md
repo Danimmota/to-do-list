@@ -1,6 +1,6 @@
 <h1 align="center">📋 ToDo List</h1>
 
-API para gerenciar tarefas (CRUD).
+API para gerenciamento de tarefas.
 
 ## ⚙️ Tecnologias Utilizadas
 
@@ -70,4 +70,40 @@ API para gerenciar tarefas (CRUD).
   
   [ ]
   ```
+## ⚙️ Como rodar o projeto localmente
+
+### Pré-requisitos
+- Java 21 
+- Maven
+
+### 1. Clone o repositório
+``` bash
+
+git clone https://github.com/Danimmota/to-do-list.git
+```
+- Vá na pasta em que clonou e abra o Git Bash ou entre no projeto via terminal com: `cd to-do-list`
+- 💡 Dica: Use uma IDE como IntelliJ IDEA ou VSCode com a extensão Java para facilitar o desenvolvimento.
+
+### 2. Configure o banco de dados
+
+- Crie um banco de dados chamado `to_do_list`
+- Atualize o arquivo `application.properties` com usuário, senha e URL do banco.
+
+### 3. Compile e rode a aplicação
+```
+./mvnw spring-boot:run
+```
+### 4. Acesse o Swagger da aplicação 
+```
+http://localhost:8080/swagger-ui/index.html#/
+```
+---
+## 👩‍💻 Autora
+
+Desenvolvido por Daniela Mota 
+
+📧 Email: danielamedeiromota@hotmail.com
+
+[🔗 LinkedIn](https://www.linkedin.com/in/danielammota/)
+
 
